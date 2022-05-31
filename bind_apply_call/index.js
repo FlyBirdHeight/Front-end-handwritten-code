@@ -12,7 +12,7 @@ const bind = function (obj, props) {
     }
     let fn = this;
     return function () {
-        fn.apply(obj, props);
+        return fn.apply(obj, props);
     }
 }
 

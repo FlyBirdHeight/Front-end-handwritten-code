@@ -68,6 +68,10 @@ const deepCopy = (target, map = new WeakMap()) => {
     if ((typeof (target) != 'object' || typeof (target) != 'function') && !target) {
         return target;
     }
+
+    if (map.has(target)) {
+        return target;
+    }
     let type = Object.prototype.toString.call(target);
     let cloneTarget;
     if (!Reflect.has(iterateObj, type)) {
@@ -79,9 +83,6 @@ const deepCopy = (target, map = new WeakMap()) => {
         cloneTarget = new Ctor()
     }
 
-    if (map.has(target)) {
-        return target;
-    }
     map.set(target, true);
 
     if (type === '[object Map]') {
