@@ -45,7 +45,7 @@ class Promise {
 
     _resolve(value) {
         if (this.status === 'Pending') {
-            if(value && (typeof value === 'object' || typeof value.then === 'function') && value instanceof Promise){
+            if(value && (typeof value === 'object' && typeof value.then === 'function') && value instanceof Promise){
                 let then = value.then;
                 then.call(value, this._resolve.bind(this), this._reject.bind(this));
                 return;
