@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 800px;
+            height: 800px;
+            box-shadow: 0 2px 2px 0 rgb(0 0 0 / 10%);
+            border: 1px solid rgba(0, 0, 0, 0.10);
+            background: #fff;
+            margin: 80px auto;
+            position: relative;
+        }
+
+        .resize {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            transform-origin: center;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="resize" id="resize"></div>
+    </div>
+    <script>
+        const dom = document.getElementById('resize');
+        const client = dom.getBoundingClientRect();
+        const centerX = client.left + client.width;
+        const centerY = client.top + client.height;
+        console.log(centerX, centerY);
+        const angle = 45;
+        let sin = Math.sin(angle * (Math.PI / 180));
+        let cos = Math.cos(angle * (Math.PI / 180));
+        console.log(dom.style);
+
+        // dom.style.transform = `matrix(${cos},${sin},${-sin},${cos},0,0)`
+        dom.addEventListener('mousedown', function (e) {
+            dom.style.transform = `matrix(${cos},${sin},${-sin},${cos},50,50)`
+            console.log(e.pageX, e.pageY);
+            console.log(e);
+
+        })
+    </script>
+</body>
+
+</html>
