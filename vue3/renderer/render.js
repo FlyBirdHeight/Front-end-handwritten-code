@@ -20,3 +20,4 @@ function normalizeClassValue(value) {
     return returnData;
 }
 
+
