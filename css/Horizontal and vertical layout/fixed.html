@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>定宽高</title>
+    <style type="text/css">
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+            position: relative;
+            float: left;
+            margin: 0 20px;
+        }
+
+        .children-box {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+            left: 50%;
+            top: 50%;
+            margin-left: -50px;
+            margin-top: -50px;
+        }
+    </style>
+    <style>
+        .box2 {
+            width: 200px;
+            height: 200px;
+            border: 1px solid;
+            position: relative;
+            margin: 0 20px;
+            float: left;
+        }
+
+        .children-box2 {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: aqua;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <style>
+        .box3 {
+            width: 200px;
+            height: 200px;
+            border: 1px solid;
+            position: relative;
+            margin: 0 20px;
+            float: left;
+        }
+
+        .children-box3 {
+            position: absolute;
+            background-color: blue;
+            width: 100px;
+            height: 100px;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+    </style>
+
+    <style>
+        .box4 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+            float: left;
+            margin: 0 20px;
+            border: 1px solid;
+        }
+
+        .children-box4 {
+            background-color: gold;
+            width: 100px;
+            height: 100px;
+            margin: auto;
+        }
+    </style>
+    <style>
+        .box5 {
+            display: grid;
+            width: 200px;
+            height: 200px;
+            float: left;
+            margin: 0 20px;
+            border: 1px solid;
+        }
+
+        .children-box5 {
+            background-color: gold;
+            width: 100px;
+            height: 100px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="box">
+            <div class="children-box"></div>
+        </div>
+        <div class="box2">
+            <div class="children-box2"></div>
+        </div>
+        <div class="box3">
+            <div class="children-box3"></div>
+        </div>
+        <div class="box4">
+            <div class="children-box4"></div>
+        </div>
+        <div class="box5">
+            <div class="children-box5"></div>
+        </div>
+    </div>
+</body>
+
+</html>

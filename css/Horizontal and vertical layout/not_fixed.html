@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>不定宽高的水平垂直居中</title>
+    <style>
+        .box-container {
+            width: 200px;
+            height: 200px;
+            border: 1px solid;
+            margin: 20px;
+            float: left;
+        }
+
+        .box {
+            position: relative;
+        }
+
+        .children-box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: red;
+        }
+
+        .box2 {
+            /* margin: 20px; */
+            float: none;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .children-box2 {
+            display: inline-block;
+            background-color: yellow;
+        }
+
+        .box3 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .children-box3 {
+            background-color: blue;
+            color: #ffffff;
+        }
+
+        .box4 {
+            display: flex;
+        }
+
+        .children-box4 {
+            margin: auto;
+            color: #ffffff;
+            background-color: green;
+        }
+
+        .box5 {
+            display: grid;
+        }
+
+        .children-box5 {
+            background-color: aquamarine;
+            justify-self: center;
+            align-self: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="box-container box">
+            <div class="children-box">绝对定位布局+transform</div>
+        </div>
+        <div class="box-container box2">
+            <div class="children-box2">table-cell(外层元素不可设置浮动)</div>
+        </div>
+        <div class="box-container box3">
+            <div class="children-box3">flex布局</div>
+        </div>
+        <div class="box-container box4">
+            <div class="children-box4">flex变异布局</div>
+        </div>
+        <div class="box-container box5">
+            <div class="children-box5">grid+flex布局</div>
+        </div>
+    </div>
+</body>
+
+</html>
