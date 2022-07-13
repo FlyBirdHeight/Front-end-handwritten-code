@@ -4,17 +4,17 @@ type VNode = {
     type: string | Symbol,
     children: string | VNode[] | VNode | null | any,
     props: object,
-    el: Document,
+    el: Node,
     key: number
 }
 
 interface RenderOptions {
     createElement(tag: any),
-    setElement(el: any, text: string | any),
-    insert(el: any, parent: any, anchor?: any | null),
-    patchProps(el: any, key: string, prevValue: any, nextValue: any),
+    setElement(el: Node, text: string | any),
+    insert(el: Node, parent: any, anchor?: any | null),
+    patchProps(el: Node, key: string, prevValue: any, nextValue: any),
     createText(value: string),
-    setText(el: Document, value: string)
+    setText(el: Node, value: string)
 }
 
 function shouldSetAsProps(el, key, value) {
@@ -143,12 +143,13 @@ function createRenderer(options: RenderOptions) {
             parent.removeChild(vnode.el)
         }
     }
-    function mountElement(vnode: VNode, container) {
+    function mountElement(vnode: VNode, container, anchor: Node | null) {
         const el = vnode.el = options.createElement(vnode.type)
 
         if (typeof vnode.children === 'string') {
             options.setElement(el, vnode.children);
         } else if (Array.isArray(vnode.children)) {
+            //如果vnode的children是一个数组的话，说明具有很多个子节点，就需要去遍历挂载或者更新
             vnode.children.forEach(v => {
                 patch(null, v, el);
             })
@@ -158,9 +159,10 @@ function createRenderer(options: RenderOptions) {
                 options.patchProps(el, key, null, vnode.props[key])
             }
         }
-        options.insert(el, container, null);
+        options.insert(el, container, anchor);
     }
     function patchElement(n1: VNode, n2: VNode) {
+        //README: 这里就是进行DOM复用，在复用了DOM元素之后，新节点将持有对真实DOM的引用
         const el = n2.el = n1.el;
         const newProps = n2.props;
         const oldProps = n1.props;
@@ -208,7 +210,7 @@ function createRenderer(options: RenderOptions) {
         }
     }
 
-    function patch(n1: VNode | undefined, n2: VNode, container) {
+    function patch(n1: VNode | undefined, n2: VNode, container, anchor: Node = null) {
         if (n1 && n1.type !== n2.type) {
             unmounted(n1);
             n1 = null;
@@ -216,8 +218,10 @@ function createRenderer(options: RenderOptions) {
         const { type } = n2;
         if (typeof type === 'string') {
             if (!n1) {
-                mountElement(n2, container);
+                //挂载
+                mountElement(n2, container, anchor);
             } else {
+                //更新节点
                 patchElement(n1, n2);
             }
         } else if (type === Text) {
