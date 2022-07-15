@@ -180,7 +180,7 @@ function createRenderer(options: RenderOptions) {
         //NOTE: 更新子节点
         patchChildren(n1, n2, el);
     }
-    function patchChildren(n1: VNode, n2: VNode, el: Document) {
+    function patchChildren(n1: VNode, n2: VNode, el: Node) {
         if (typeof n2.children === 'string') {
             if (Array.isArray(n1.children)) {
                 n1.children.forEach(child => {
@@ -210,7 +210,7 @@ function createRenderer(options: RenderOptions) {
         }
     }
 
-    function patch(n1: VNode | undefined, n2: VNode, container, anchor: Node = null) {
+    function patch(n1: VNode | undefined | null, n2: VNode, container, anchor: Node = null) {
         if (n1 && n1.type !== n2.type) {
             unmounted(n1);
             n1 = null;
