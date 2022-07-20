@@ -80,8 +80,7 @@ const quickDiff = function (newChildren: VNode[], oldChildren: VNode[], containe
             this.unmount(oldChildren[i]);
         }
     } else if (newEnd >= j && oldEnd < j) {
-        //NOTE: 这里不知道是不是写错了，他这里应该是挂载在j下标的节点后面才对，书上写的是newEnd + 1，很奇怪，不知道对不对
-        let anchorIndex = j + 1;
+        let anchorIndex = newEnd + 1;
         let anchor = anchorIndex < newChildren.length ? newChildren[anchorIndex].el : null;
         //README: 这里就是装载的情况，说明在newChildren中，存在新增加的节点，且范围是在j到newEnd之间
         for (let i = j; i <= newEnd; i++) {
@@ -107,7 +106,7 @@ const quickDiff = function (newChildren: VNode[], oldChildren: VNode[], containe
         let pos = 0
         let newChildrenKeyIndex = {}
         for (let i = 0; i < newChildren.length; i++) {
-            newChildrenKeyIndex[i] = newChildren[i].key;
+            newChildrenKeyIndex[newChildren[i].key] = i;
         }
         //NOTE: 建立映射关系，并且卸载不需要的节点
         for (let i = 0; i < oldChildren.length; i++) {
