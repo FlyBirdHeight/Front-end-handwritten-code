@@ -1,7 +1,7 @@
 import { simpleDiff01 } from "./diff/simpleDiff";
 
 type VNode = {
-    type: string | Symbol,
+    type: { render: any, data: any } | string | Symbol,
     children: string | VNode[] | VNode | null | any,
     props: object,
     el: Node,
@@ -245,10 +245,60 @@ function createRenderer(options: RenderOptions) {
         }
         if (typeof type === 'object') {
             //NOTE: 这个n2挂载的type就是一个组件，就需要对组件进行处理
+            if (!n1) {
+                //挂载组件
+                mountComponent(n2, container, anchor);
+            } else {
+                //更新组件
+                patchComponent(n1, n2, anchor);
+            }
         } else if (type === null) {
             //NOTE: 专门用来处理其他类型的vnode
         }
 
+    }
+    function mountComponent(vnode: VNode, container: any, anchor: any = null) {
+        const componentOptions = vnode.type;
+        const { render, data } = componentOptions;
+
+        //README: data也是一个函数，用来获取自定义数据的内容，返回的是一个对象，所以可以使用reactive进行响应式数据改造
+        const state = reactive(data());
+        //README: 注册一个响应式副作用函数，一旦响应式数据发生改变，就刷新组件
+        effect(() => {
+            //NOTE: render是一个函数，用来获取描述组件所渲染内容的接口，绑定this上下文
+            const subTree = render.call(state, state);
+            patch(null, subTree, container, anchor);
+        }, {
+            //FIXME: 添加一个调度器，避免重复调度
+            scheduler: queueJob
+        })
+    }
+    /**
+     * @method queueJob
+     * @param job 
+     * @description 使用防抖和微任务的思想，避免组件刷新重复进行
+     */
+    function queueJob(job) {
+        const queue = new Set();
+        let isFlushing = false;
+        const p = Promise.resolve();
+
+        return function(job) {
+            queue.add(job);
+            if(!isFlushing) {
+                isFlushing = true;
+                //TODO: 微任务的执行一定是在eventloop的最终阶段的
+                p.then(() => {
+                    try {
+                        queue.forEach((job: any) => job())
+                    }finally{
+                        //NOTE: 当所有的任务执行完成之后，重置一下状态
+                        isFlushing = false;
+                        queue.clear();
+                    }
+                })
+            }
+        }
     }
 }
 
